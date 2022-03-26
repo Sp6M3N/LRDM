@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EventPost index{% endblock %}
+
+{% block body %}
+    <h1>EventPost index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Comment</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event_post in event_posts %}
+            <tr>
+                <td>{{ event_post.id }}</td>
+                <td>{{ event_post.comment }}</td>
+                <td>
+                    <a href="{{ path('app_event_post_show', {'id': event_post.id}) }}">show</a>
+                    <a href="{{ path('app_event_post_edit', {'id': event_post.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_event_post_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New NewLetter{% endblock %}
+
+{% block body %}
+    <h1>Create new NewLetter</h1>
+
+    {{ include('new_letter/_form.html.twig') }}
+
+    <a href="{{ path('app_new_letter_index') }}">back to list</a>
+{% endblock %}

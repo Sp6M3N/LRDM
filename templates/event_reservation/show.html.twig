@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EventReservation{% endblock %}
+
+{% block body %}
+    <h1>EventReservation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ event_reservation.id }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ event_reservation.createdAt ? event_reservation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>FirstName</th>
+                <td>{{ event_reservation.firstName }}</td>
+            </tr>
+            <tr>
+                <th>LastName</th>
+                <td>{{ event_reservation.lastName }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ event_reservation.email }}</td>
+            </tr>
+            <tr>
+                <th>Tel</th>
+                <td>{{ event_reservation.tel }}</td>
+            </tr>
+            <tr>
+                <th>Quantity</th>
+                <td>{{ event_reservation.quantity }}</td>
+            </tr>
+            <tr>
+                <th>Paid</th>
+                <td>{{ event_reservation.paid ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_event_reservation_index') }}">back to list</a>
+
+    <a href="{{ path('app_event_reservation_edit', {'id': event_reservation.id}) }}">edit</a>
+
+    {{ include('event_reservation/_delete_form.html.twig') }}
+{% endblock %}

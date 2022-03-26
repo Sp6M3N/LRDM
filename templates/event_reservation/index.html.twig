@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EventReservation index{% endblock %}
+
+{% block body %}
+    <h1>EventReservation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>CreatedAt</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Email</th>
+                <th>Tel</th>
+                <th>Quantity</th>
+                <th>Paid</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event_reservation in event_reservations %}
+            <tr>
+                <td>{{ event_reservation.id }}</td>
+                <td>{{ event_reservation.createdAt ? event_reservation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ event_reservation.firstName }}</td>
+                <td>{{ event_reservation.lastName }}</td>
+                <td>{{ event_reservation.email }}</td>
+                <td>{{ event_reservation.tel }}</td>
+                <td>{{ event_reservation.quantity }}</td>
+                <td>{{ event_reservation.paid ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_event_reservation_show', {'id': event_reservation.id}) }}">show</a>
+                    <a href="{{ path('app_event_reservation_edit', {'id': event_reservation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_event_reservation_new') }}">Create new</a>
+{% endblock %}
