@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\EventPost;
 use App\Form\EventPostType;
 use App\Repository\EventPostRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,7 @@ class EventPostController extends AbstractController
 {
     /**
      * @Route("/", name="app_event_post_index", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(EventPostRepository $eventPostRepository): Response
     {
@@ -27,6 +29,7 @@ class EventPostController extends AbstractController
 
     /**
      * @Route("/new", name="app_event_post_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, EventPostRepository $eventPostRepository): Response
     {
@@ -57,6 +60,7 @@ class EventPostController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="app_event_post_edit", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, EventPost $eventPost, EventPostRepository $eventPostRepository): Response
     {
@@ -76,6 +80,7 @@ class EventPostController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_event_post_delete", methods={"POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, EventPost $eventPost, EventPostRepository $eventPostRepository): Response
     {

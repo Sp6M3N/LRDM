@@ -9,6 +9,7 @@ use App\Repository\EventRepository;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -25,6 +26,7 @@ class EventController extends AbstractController
 {
     /**
      * @Route("/", name="app_event_index", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(EventRepository $eventRepository): Response
     {
@@ -35,6 +37,7 @@ class EventController extends AbstractController
 
     /**
      * @Route("/new", name="app_event_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      * @throws Exception
      */
     public function new(Request $request, EventRepository $eventRepository, SluggerInterface $slugger, EntityManagerInterface $manager): Response
@@ -108,6 +111,7 @@ class EventController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="app_event_edit", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Event $event, EventRepository $eventRepository): Response
     {
@@ -127,6 +131,7 @@ class EventController extends AbstractController
 
     /**
      * @Route("/supprime/image/{id}", name="annonces_delete_image", methods={"DELETE"})
+     * @IsGranted("ROLE_ADMIN")
      * @throws \JsonException
      */
     public function deleteImage(EventImage $image, Request $request, EntityManagerInterface $manager): JsonResponse
@@ -154,6 +159,7 @@ class EventController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_event_delete", methods={"POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Event $event, EventRepository $eventRepository): Response
     {

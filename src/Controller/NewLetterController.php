@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\NewLetter;
 use App\Form\NewLetterType;
 use App\Repository\NewLetterRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,7 @@ class NewLetterController extends AbstractController
 {
     /**
      * @Route("/", name="app_new_letter_index", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(NewLetterRepository $newLetterRepository): Response
     {
@@ -47,6 +49,7 @@ class NewLetterController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_new_letter_show", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function show(NewLetter $newLetter): Response
     {
@@ -57,6 +60,7 @@ class NewLetterController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="app_new_letter_edit", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, NewLetter $newLetter, NewLetterRepository $newLetterRepository): Response
     {
@@ -76,6 +80,7 @@ class NewLetterController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_new_letter_delete", methods={"POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, NewLetter $newLetter, NewLetterRepository $newLetterRepository): Response
     {
