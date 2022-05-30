@@ -20,25 +20,20 @@
         </div>
     </div>
     <div class="content bg-dark text-white">
-        <img style="float:right;margin-top:10px;margin-right:15px;width: 20%"
-             src="{{ asset('assets/images/1920x1080.jpeg') }}"
-             alt="Script R"/>
-        <h2>Ici le prochain évènement</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Audeo dicere, inquit. Bonum liberi: misera orbitas.
-            Paria sunt igitur. Frater et T. Duo Reges: constructio interrete. </p>
-
-        <p><b>Si longus, levis.</b> Quis istud possit, inquit, negare? <a href='http://loripsum.net/' target='_blank'>Qualem
-                igitur hominem natura inchoavit?</a> Si quae forte-possumus. Erat enim Polemonis. Quid sequatur, quid
-            repugnet, vident. </p>
-
-        <p><a href='http://loripsum.net/' target='_blank'>Equidem e Cn.</a> Falli igitur possumus. <b>Immo videri
-                fortasse.</b> Eademne, quae restincta siti? Oratio me istius philosophi non offendit; Quamquam tu hanc
-            copiosiorem etiam soles dicere. </p>
-
-        <p><b>Conferam avum tuum Drusum cum C.</b> Praeclare hoc quidem. Verum hoc idem saepe faciamus. Tu vero, inquam,
-            ducas licet, si sequetur; Primum divisit ineleganter; Cave putes quicquam esse verius. </p>
-
-        <div style="clear:both;"></div>
+        {% for key,event in events %}
+            {% if key is same as(0) %}
+                {% for key,image in event.eventImages %}
+                    {% if key is same as(0)  %}
+                        <img style="float:right;margin-top:10px;margin-right:15px;width: 20%"
+                             src="{{ asset('uploads/event/'~ image.name) }}"
+                             alt="Script R"/>
+                    {% endif %}
+                {% endfor %}
+                <h2>{{ event.title }}</h2>
+                <p>{{ event.detail|raw}} </p>
+                <div style="clear:both;"></div>
+            {% endif %}
+        {% endfor %}
     </div>
     <div class="parallax" id="trans2">
         <div class="txt left">
@@ -51,17 +46,23 @@
     </div>
 
     <div class="content right bg-dark text-white">
-        <img style="float:left;margin-top:10px;margin-left:15px;width:20%;"
-             src="{{ asset('assets/images/1920x1080.jpeg') }}"
-             alt="Mr and Mrs"/></a>
-        <h2>Another Content Block</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequens enim est et post oritur, ut dixi. Hoc
-            ipsum elegantius poni meliusque potuit. Quo tandem modo? Sed plane dicit quod intellegit. Tibi hoc
-            incredibile, quod beatissimum. Duo Reges: constructio interrete. Si quicquam extra virtutem habeatur in
-            bonis. Quid enim? </p>
-        <p>Comprehensum, quod cognitum non habet? Sint ista Graecorum; Quantum Aristoxeni ingenium consumptum videmus in
-            musicis? Sequitur disserendi ratio cognitioque naturae; </p>
-        <div style="clear:both;"></div>
+        <h2>Nos prochains évènements</h2>
+        <div class="d-flex justify-content-evenly">
+            {% for key,event in events %}
+                {% if key is not same as(0) %}
+                    {% for key,image in event.eventImages %}
+                        {% if key is same as(0)  %}
+                            <a>
+                                <img style="width:100%;"
+                                     src="{{ asset('uploads/event/' ~ image.name) }}"
+                                     alt="Mr and Mrs"/>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                    <div style="clear:both;"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
     <div class="parallax" id="trans3">
         <div class="txt left">
@@ -74,6 +75,19 @@
     </div>
 
     <div id="footer" class="bg-dark text-white">
-        <p>Designed with Love and Care</p>
-        By: Sp6M3N</div>
+        <div class=" d-flex justify-content-center">
+            <form action="{{ path('app_new_letter_new') }}" class="col-6">
+                {{ include('new_letter/_form.html.twig') }}
+                {#            <div class="mb-3 col-6">#}
+                {#                <label for="mail" class="form-label">Vous souhaitez être au courant de nos prochains évènement, laissez nous votre eMail !</label>#}
+                {#                <input type="email" class="form-control" id="mail" placeholder="name@example.com" name="mail">#}
+                {#                <button type="submit" class="btn btn-block btn-secondary w-100">Envoyer</button>#}
+                {#            </div>#}
+            </form>
+        </div>
+        <div class="mt-1">
+            <p>Designed with Love and Care</p>
+            By: <a href="mailto: vidal.wplace@gmail.com">Sp6M3N</a>
+        </div>
+    </div>
 {% endblock %}

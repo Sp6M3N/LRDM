@@ -3,36 +3,38 @@
 {% block title %}Event{% endblock %}
 
 {% block body %}
-    <h1>Event</h1>
+    <div class="container mx-auto my-5 shadow-lg bg-dark text-white text-center">
 
-    <table class="table">
-        <tbody>
+        <h1>{{ event.title }}</h1>
+
+        <table class="table table-dark">
+            <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ event.id }}</td>
+                {% for image in event.eventImages %}
+                    <th>{{ image.name }}</th>
+                    <td><img src="{{ asset('uploads/event/' ~ image.name) }}" alt="" style="max-width: 200px"></td>
+
+                {% endfor %}
             </tr>
             <tr>
-                <th>CreatedAt</th>
-                <td>{{ event.createdAt ? event.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <th>Date de création</th>
+                <td>{{ event.createdAt ? event.createdAt|date('d/m/Y H:i') : '' }}</td>
             </tr>
             <tr>
-                <th>EventDate</th>
-                <td>{{ event.eventDate ? event.eventDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ event.title }}</td>
+                <th>Datecde l'event</th>
+                <td>{{ event.eventDate ? event.eventDate|date('d/m/Y H:i') : '' }}</td>
             </tr>
             <tr>
                 <th>Detail</th>
-                <td>{{ event.detail }}</td>
+                <td>{{ event.detail|raw }}</td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <a href="{{ path('app_event_index') }}">back to list</a>
+        <a href="{{ path('app_event_index') }}" class="btn btn-info btn-block w-100"><i class="material-icons">reply</i>&nbsp;Retour liste</a>
 
-    <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>
+        <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-warning btn-block w-100">edit<i class="material-icons"></i>&nbsp;</a>
 
-    {{ include('event/_delete_form.html.twig') }}
+        {{ include('event/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

@@ -3,12 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Entity\EventImage;
 use App\Form\EventType;
 use App\Repository\EventRepository;
+use DateTimeZone;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @Route("/event")
@@ -27,17 +35,60 @@ class EventController extends AbstractController
 
     /**
      * @Route("/new", name="app_event_new", methods={"GET", "POST"})
+     * @throws Exception
      */
-    public function new(Request $request, EventRepository $eventRepository): Response
+    public function new(Request $request, EventRepository $eventRepository, SluggerInterface $slugger, EntityManagerInterface $manager): Response
     {
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $event->setCreatedAt(new \DateTime(null, new DateTimeZone('Europe/Paris')));
             $eventRepository->add($event);
+
+            /** @var UploadedFile $imageFiles */
+            $imageFiles = $form->get('images')->getData();
+            // this condition is needed because the 'image' field is not required
+            // so the image file must be processed only when a file is uploaded
+            if ($imageFiles) {
+                foreach ($imageFiles as $imageFile){
+
+                    $image = new EventImage();
+
+                    $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid('', true).'.'.$imageFile->guessExtension();
+
+                    // Move the file to the directory where images are stored
+                    try {
+                        $imageFile->move(
+                            $this->getParameter('images_event_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+
+                    // updates the 'imageFilename' property to store the image file name
+                    // instead of its contents
+                    $image->setName($newFilename);
+                    $image->setEvent($event);
+
+                    $manager->persist($image);
+                    $manager->flush();
+                }
+
+            }
             return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
         }
+
+//            $event->setCreatedAt(new \DateTime(null, new DateTimeZone('Europe/Paris')));
+//            $eventRepository->add($event);
+//            return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
+//        }
 
         return $this->renderForm('event/new.html.twig', [
             'event' => $event,
@@ -73,6 +124,33 @@ class EventController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    /**
+     * @Route("/supprime/image/{id}", name="annonces_delete_image", methods={"DELETE"})
+     * @throws \JsonException
+     */
+    public function deleteImage(EventImage $image, Request $request, EntityManagerInterface $manager): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        // On vérifie si le token est valide
+        if($this->isCsrfTokenValid('delete'.$image->getId(), $data['_token'])){
+            // On récupère le nom de l'image
+            $nom = $image->getName();
+            // On supprime le fichier
+            unlink($this->getParameter('images_event_directory').'/'.$nom);
+
+            // On supprime l'entrée de la base
+            $manager->remove($image);
+            $manager->flush();
+
+            // On répond en json
+            return new JsonResponse(['success' => 1]);
+        }
+
+        return new JsonResponse(['error' => 'Token Invalide'], 400);
+    }
+
 
     /**
      * @Route("/{id}", name="app_event_delete", methods={"POST"})

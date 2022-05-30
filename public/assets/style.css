@@ -1,4 +1,13 @@
-body { margin:0;padding:0;font-family:Verdana;}
+body {
+    margin:0;
+    padding:0;
+    font-family:Verdana;
+}
+
+.material-icons {
+    display: inline-flex;
+    vertical-align: top;
+}
 
 #header {
     box-sizing:border-box;-moz-box-sizing:border-box;

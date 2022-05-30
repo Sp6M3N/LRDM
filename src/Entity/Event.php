@@ -25,12 +25,12 @@ class Event
     private $eventType;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime")
      */
     private $eventDate;
 
@@ -83,24 +83,24 @@ class Event
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getEventDate(): ?\DateTimeImmutable
+    public function getEventDate(): ?\DateTimeInterface
     {
         return $this->eventDate;
     }
 
-    public function setEventDate(\DateTimeImmutable $eventDate): self
+    public function setEventDate(\DateTimeInterface $eventDate): self
     {
         $this->eventDate = $eventDate;
 

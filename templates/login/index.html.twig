@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello LoginController!{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto -y-5 shadow-lg my-5 text-white">
+
+        {% if error %}
+            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        <form action="{{ path('app_login') }}" method="post">
+            <div class="mb-3">
+                <label for="username" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="username" aria-describedby="emailHelp" name="_username" value="{{ last_username }}">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="_password">
+            </div>
+{#            <div class="mb-3 form-check">#}
+{#                <input type="checkbox" class="form-check-input" id="exampleCheck1">#}
+{#                <label class="form-check-label" for="exampleCheck1">Check me out</label>#}
+{#            </div>#}
+            <button type="submit" class="btn btn-secondary btn-block w-100">Submit</button>
+        </form>
+    </div>
+{% endblock %}

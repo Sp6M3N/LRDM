@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
 {% block title %}New Event{% endblock %}
 
 {% block body %}
-    <h1>Create new Event</h1>
+    <div class="container p-2 mx-auto my-5 shadow-lg">
+        <h1>Create new Event</h1>
 
-    {{ include('event/_form.html.twig') }}
+        {{ include('event/_form.html.twig') }}
 
-    <a href="{{ path('app_event_index') }}">back to list</a>
+        <a href="{{ path('app_event_index') }}" class="btn btn-outline-danger btn-block w-100 my-1">Annuler</a>
+    </div>
 {% endblock %}
