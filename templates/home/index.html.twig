@@ -5,21 +5,32 @@
 {% block body %}
 
     <div id="header">
-        <h1 style="padding:0;margin:0;">Repaire Motard</h1>
+        <h1 style="padding:0;margin:0;">Repaire Motard
+            <a class="btn btn-primary" style="background-color: #3b5998;" href="https://www.facebook.com/groups/433950498164898/user/100077833853146/" role="button" target="_blank">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </h1>
     </div>
     <div class="parallax" id="trans1">
         <div class="txt right">
-            &#10085;Live<br/>
-            Laugh<br/>
-            Enjoy&#10085;
+            {#            &#10085;Live<br/>#}
+            {#            Laugh<br/>#}
+            {#            Enjoy&#10085;#}Bienvenue
         </div>
         <div style="clear:both;"></div>
         <div class="txt right sub">
-            Every Story is Beautiful<br/>
-            But Ours is My Favorite
+            {#            Every Story is Beautiful<br/>#}
+            {#            But Ours is My Favorite#}
+            Le repaire est une association qui organise des soirées à thème pour permettre à toutes personnes motarde ou non, de venir faire la fête dans un cadre simple et accueillant.
+            Nous organiserons aussi des balades en moto, de tout genres, pour passer un moment sympas entre motards.
+            L'association a décidé de venir en aide aux personnes démunies en distribuant des produits de première nécessité tel que des produits d'hygiène lors de maraude.
+            Vous serez les bienvenus à chacune de nos manifestations.
+
         </div>
+
     </div>
     <div class="content bg-dark text-white">
+        <h1>Notre prochain Evènement</h1>
         {% for key,event in events %}
             {% if key is same as(0) %}
                 {% for key,image in event.eventImages %}
